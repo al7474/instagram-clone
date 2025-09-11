@@ -1,26 +1,29 @@
 // filepath: src/features/auth/Auth.tsx
-import phoneImage from '../../assets/images/phone.webp'; // Import the image
+import phoneImage from '../../assets/images/landing-2x.png'; // Usa la nueva imagen descargada
 
 function Auth() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 font-family-system">
       {/* Main container */}
       <div className="flex flex-grow items-center justify-center">
-        <div className="auth-container grid grid-cols-1 md:grid-cols-2 w-[900px] h-[850px] bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+  <div
+  className="auth-container flex bg-white dark:bg-gray-800 rounded-lg"
+    style={{gap: '0'}}
+  >
           {/* First column: Image */}
-          <div className="hidden md:flex items-start justify-center  dark:bg-gray-900  pt-25 pl-20">
+          <div className="hidden lg:flex items-center justify-center dark:bg-gray-900 p-0 m-0 pr-10" style={{height:'auto', width:'auto'}}>
             <img
-              src={phoneImage} // Use the imported image
+              src={phoneImage}
               alt="Phone Preview"
-              className="w-[380px] h-[580px]"
+              style={{ height: '450px', width: 'auto', display: 'block', margin: '0 auto' }}
             />
           </div>
 
           {/* Second column: Content */}
-          <div className="flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 pr-8">
+          <div className="flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-900 p-0 m-0" style={{height:'auto', width:'auto'}}>
             {/* First div: Login form */}
             <div className="w-[350px] h-[410px] bg-white dark:bg-gray-800 p-10 rounded shadow-md">
-              <div className="w-full flex justify-center mb-8 ml-2">
+              <div className="w-full flex justify-center mb-8 ml-2 pt-5">
                 <div
                   className="instagram-logo"
                   style={{
@@ -99,10 +102,10 @@ function Auth() {
             {/* Third div: Images */}
             <div className="w-[350px] flex flex-col items-center justify-center mt-4">
               {/* Text "Get the app" */}
-              <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Get the app</p>
+              {/* <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">Get the app</p> */}
 
               {/* App Store, Google Play, and Microsoft Store images */}
-              <div className="w-[350px] h-[40px] flex items-center justify-center gap-2 ">
+              {/* <div className="w-[350px] h-[40px] flex items-center justify-center gap-2 ">
                 <img
                   src="https://static.cdninstagram.com/rsrc.php/v4/yz/r/c5Rp7Ym-Klz.png"
                   alt="Get it on Google Play"
@@ -113,7 +116,7 @@ function Auth() {
                   alt="Get it from Microsoft"
                   className="w-[110px] h-[40px]"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

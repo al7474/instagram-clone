@@ -1,6 +1,6 @@
 import React from 'react';
-import InstagramLogo from '../../assets/InstagramLogo';
-import { FiHome, FiSearch, FiHeart, FiUser, FiPlusSquare, FiMessageCircle, FiSettings, FiMoreHorizontal } from 'react-icons/fi';
+import InstagramLogo from '../../assets/logos/name_logo.png';
+import { FiHome, FiSearch, FiHeart, FiPlusSquare, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
 import { MdExplore, MdVideoLibrary } from 'react-icons/md';
 import { BiCircle } from 'react-icons/bi';
 import { TbCircleDotted } from 'react-icons/tb';
@@ -11,8 +11,8 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
     <div className="flex min-h-screen w-full bg-black text-white">
       {/* Sidebar */}
       <aside className="w-[260px] flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen">
-        <div className="mb-8 flex items-center w-full">
-          <InstagramLogo width={120} height={32} color="white" />
+        <div className="mb-8 flex items-center w-full pl-2 pt-3">
+          <img src={InstagramLogo} alt="Instagram" width={120} height={32} />
         </div>
         <nav className="flex flex-col gap-2 w-full">
           <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-bold text-white bg-black rounded-lg">

@@ -10,7 +10,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
   return (
     <div className="flex min-h-screen w-full bg-black text-white">
       {/* Sidebar */}
-      <aside className="w-[260px] flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen">
+      <aside className="w-[360px] flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen">
         <div className="mb-8 flex items-center w-full pl-2 pt-3">
           <img src={InstagramLogo} alt="Instagram" width={120} height={32} />
         </div>
@@ -96,9 +96,9 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
             <div className="text-gray-400 text-xs">215,674 likes</div>
           </div>
         </div>
-      </main>
+      </main> 
       {/* Suggestions */}
-  <aside className="w-[350px] flex-shrink-0 py-8 px-4 border-l border-gray-800 min-h-screen">
+  <aside className="w-[350px] flex-shrink-0 py-8 px-4 border-l border-gray-800 min-h-screen ">
         <div className="flex items-center gap-3 mb-8">
           <img src="https://i.pravatar.cc/150?img=10" alt="avatar" className="w-12 h-12 rounded-full" />
           <div>

@@ -1,5 +1,7 @@
 import React from 'react';
 import InstagramLogo from '../../assets/logos/name_logo.png';
+import InstagramGlyph from '../../assets/logos/logo.png';
+import { useState } from 'react';
 import { FiHome, FiSearch, FiHeart, FiPlusSquare, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
 import { MdExplore, MdVideoLibrary } from 'react-icons/md';
 import { BiCircle } from 'react-icons/bi';
@@ -7,55 +9,89 @@ import { TbCircleDotted } from 'react-icons/tb';
 import { PiThreadsLogo } from 'react-icons/pi';
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
+  const [showSearch, setShowSearch] = useState(false);
   return (
     <div className="flex min-h-screen w-full bg-black text-white">
       {/* Sidebar */}
-      <aside className="w-[360px] flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen">
-        <div className="mb-8 flex items-center w-full pl-2 pt-3">
-          <img src={InstagramLogo} alt="Instagram" width={120} height={32} />
+      <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen transition-all duration-200 ${showSearch ? 'w-[80px]' : 'w-[260px]'}`}>
+        <div className="mb-8 flex items-center w-full">
+          {showSearch ? (
+            <img src={InstagramGlyph} alt="Instagram" width={32} height={32} style={{ filter: 'invert(1)' }} />
+          ) : (
+            <img src={InstagramLogo} alt="Instagram" width={120} height={32} />
+          )}
         </div>
-        <nav className="flex flex-col gap-2 w-full">
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-bold text-white bg-black rounded-lg">
-            <FiHome size={24}/> <span>Home</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <FiSearch size={24}/> <span>Search</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <MdExplore size={24}/> <span>Explore</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <MdVideoLibrary size={24}/> <span>Reels</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <FiMessageCircle size={24}/> <span>Messages</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <FiHeart size={24}/> <span>Notifications</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <FiPlusSquare size={24}/> <span>Create</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-6 h-6 rounded-full" /> <span>Profile</span>
-          </a>
+        <nav className={`flex flex-col gap-2 w-full ${showSearch ? 'items-center' : ''}`}>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-bold text-white bg-black rounded-lg w-full`} onClick={() => setShowSearch(false)}>
+            <FiHome size={24}/>{!showSearch && <span>Home</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${showSearch ? 'bg-gray-900' : ''}`} onClick={() => setShowSearch(true)}>
+            <FiSearch size={24}/>{!showSearch && <span>Search</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <MdExplore size={24}/>{!showSearch && <span>Explore</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <MdVideoLibrary size={24}/>{!showSearch && <span>Reels</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <FiMessageCircle size={24}/>{!showSearch && <span>Messages</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <FiHeart size={24}/>{!showSearch && <span>Notifications</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <FiPlusSquare size={24}/>{!showSearch && <span>Create</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-6 h-6 rounded-full" />{!showSearch && <span>Profile</span>}
+          </button>
         </nav>
         <div className="flex-1" />
-        <nav className="flex flex-col gap-2 w-full mt-8">
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <BiCircle size={24}/> <span>Meta AI</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <TbCircleDotted size={24}/> <span>AI Studio</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <PiThreadsLogo size={24}/> <span>Threads</span>
-          </a>
-          <a href="#" className="flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg">
-            <FiMoreHorizontal size={24}/> <span>More</span>
-          </a>
+        <nav className={`flex flex-col gap-2 w-full mt-8 ${showSearch ? 'items-center' : ''}`}>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <BiCircle size={24}/>{!showSearch && <span>Meta AI</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <TbCircleDotted size={24}/>{!showSearch && <span>AI Studio</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <PiThreadsLogo size={24}/>{!showSearch && <span>Threads</span>}
+          </button>
+          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+            <FiMoreHorizontal size={24}/>{!showSearch && <span>More</span>}
+          </button>
         </nav>
       </aside>
+      {/* Search Panel */}
+      {showSearch && (
+        <section className="w-[350px] min-h-screen bg-black border-r border-gray-800 py-6 px-6 flex flex-col">
+          <span className="text-2xl font-bold block mb-4">Search</span>
+          <div className="bg-gray-900 rounded-lg p-2 mb-4">
+            <input
+              type="text"
+              placeholder="Search"
+              className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 text-lg focus:outline-none"
+            />
+          </div>
+          <div className="flex items-center justify-between mb-2 px-2">
+            <span className="font-semibold text-white">Recent</span>
+            <button className="text-blue-400 text-sm font-bold">Clear all</button>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3 px-2 py-2 hover:bg-gray-900 rounded-lg">
+              <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-10 h-10 rounded-full" />
+              <div>
+                <div className="font-bold text-white flex items-center gap-1">
+                  honeymoon <span className="text-blue-400 text-xs">✔</span>
+                </div>
+                <div className="text-gray-400 text-xs">LANA DEL REY • Following</div>
+              </div>
+              <button className="ml-auto text-white text-xl">×</button>
+            </div>
+          </div>
+        </section>
+      )}
       {/* Main Feed */}
       <main className="flex-1 flex flex-col items-center py-8 px-4 min-h-screen">
         {/* Stories */}
@@ -96,7 +132,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
             <div className="text-gray-400 text-xs">215,674 likes</div>
           </div>
         </div>
-      </main> 
+      </main>
       {/* Suggestions */}
   <aside className="w-[350px] flex-shrink-0 py-8 px-4 border-l border-gray-800 min-h-screen ">
         <div className="flex items-center gap-3 mb-8">

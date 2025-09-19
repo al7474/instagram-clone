@@ -1,7 +1,9 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
+import SearchPanel from './SearchPanel';
 import InstagramLogo from '../../assets/logos/name_logo.png';
 import InstagramGlyph from '../../assets/logos/logo.png';
-import { useState } from 'react';
+
 import { FiHome, FiSearch, FiHeart, FiPlusSquare, FiMessageCircle, FiMoreHorizontal } from 'react-icons/fi';
 import { MdExplore, MdVideoLibrary } from 'react-icons/md';
 import { BiCircle } from 'react-icons/bi';
@@ -10,88 +12,74 @@ import { PiThreadsLogo } from 'react-icons/pi';
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
   const [showSearch, setShowSearch] = useState(false);
+  const [isCompactSidebar, setIsCompactSidebar] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsCompactSidebar(window.innerWidth < 1200);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className="flex min-h-screen w-full bg-black text-white">
       {/* Sidebar */}
-      <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen transition-all duration-200 ${showSearch ? 'w-[80px]' : 'w-[260px]'}`}>
+      <aside className={`flex-shrink-0 flex flex-col py-6 px-2 border-r border-gray-800 min-h-screen transition-all duration-200
+        ${showSearch || isCompactSidebar ? 'w-16' : 'w-64'}
+        min-w-[56px] max-w-xs
+      `}>
         <div className="mb-8 flex items-center w-full">
-          {showSearch ? (
+          {(showSearch || isCompactSidebar) ? (
             <img src={InstagramGlyph} alt="Instagram" width={32} height={32} style={{ filter: 'invert(1)' }} />
           ) : (
             <img src={InstagramLogo} alt="Instagram" width={120} height={32} />
           )}
         </div>
-        <nav className={`flex flex-col gap-2 w-full ${showSearch ? 'items-center' : ''}`}>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-bold text-white bg-black rounded-lg w-full`} onClick={() => setShowSearch(false)}>
-            <FiHome size={24}/>{!showSearch && <span>Home</span>}
+  <nav className="flex flex-col gap-2 w-full items-start"> 
+          <button className={`flex items-center ${(showSearch || isCompactSidebar) ? 'gap-2 px-2 py-2 text-base' : 'gap-4 px-3 py-3 text-lg'} font-bold text-white bg-black rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`} onClick={() => setShowSearch(false)}>
+            <FiHome size={22}/>{!(showSearch || isCompactSidebar) && <span>Home</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${showSearch ? 'bg-gray-900' : ''}`} onClick={() => setShowSearch(true)}>
-            <FiSearch size={24}/>{!showSearch && <span>Search</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start bg-gray-900' : ''}`} onClick={() => setShowSearch(true)}>
+            <FiSearch size={22}/>{!(showSearch || isCompactSidebar) && <span>Search</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <MdExplore size={24}/>{!showSearch && <span>Explore</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <MdExplore size={22}/>{!(showSearch || isCompactSidebar) && <span>Explore</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <MdVideoLibrary size={24}/>{!showSearch && <span>Reels</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <MdVideoLibrary size={22}/>{!(showSearch || isCompactSidebar) && <span>Reels</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <FiMessageCircle size={24}/>{!showSearch && <span>Messages</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <FiMessageCircle size={22}/>{!(showSearch || isCompactSidebar) && <span>Messages</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <FiHeart size={24}/>{!showSearch && <span>Notifications</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <FiHeart size={22}/>{!(showSearch || isCompactSidebar) && <span>Notifications</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <FiPlusSquare size={24}/>{!showSearch && <span>Create</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <FiPlusSquare size={22}/>{!(showSearch || isCompactSidebar) && <span>Create</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-6 h-6 rounded-full" />{!showSearch && <span>Profile</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center lg:justify-start' : ''}`}>
+            <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-6 h-6 rounded-full" />{!(showSearch || isCompactSidebar) && <span>Profile</span>}
           </button>
         </nav>
         <div className="flex-1" />
-        <nav className={`flex flex-col gap-2 w-full mt-8 ${showSearch ? 'items-center' : ''}`}>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <BiCircle size={24}/>{!showSearch && <span>Meta AI</span>}
+  <nav className="flex flex-col gap-2 w-full items-start mt-8"> 
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center' : ''}`}>
+            <BiCircle size={22}/>{!(showSearch || isCompactSidebar) && <span>Meta AI</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <TbCircleDotted size={24}/>{!showSearch && <span>AI Studio</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center' : ''}`}>
+            <TbCircleDotted size={22}/>{!(showSearch || isCompactSidebar) && <span>AI Studio</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <PiThreadsLogo size={24}/>{!showSearch && <span>Threads</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center' : ''}`}>
+            <PiThreadsLogo size={22}/>{!(showSearch || isCompactSidebar) && <span>Threads</span>}
           </button>
-          <button className={`flex items-center ${showSearch ? 'justify-center' : 'gap-4'} px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
-            <FiMoreHorizontal size={24}/>{!showSearch && <span>More</span>}
+          <button className={`flex items-center gap-4 px-3 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${(showSearch || isCompactSidebar) ? 'justify-center' : ''}`}>
+            <FiMoreHorizontal size={22}/>{!(showSearch || isCompactSidebar) && <span>More</span>}
           </button>
         </nav>
       </aside>
       {/* Search Panel */}
-      {showSearch && (
-        <section className="w-[350px] min-h-screen bg-black border-r border-gray-800 py-6 px-6 flex flex-col">
-          <span className="text-2xl font-bold block mb-4">Search</span>
-          <div className="bg-gray-900 rounded-lg p-2 mb-4">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 text-lg focus:outline-none"
-            />
-          </div>
-          <div className="flex items-center justify-between mb-2 px-2">
-            <span className="font-semibold text-white">Recent</span>
-            <button className="text-blue-400 text-sm font-bold">Clear all</button>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-3 px-2 py-2 hover:bg-gray-900 rounded-lg">
-              <img src="https://i.pravatar.cc/150?img=1" alt="avatar" className="w-10 h-10 rounded-full" />
-              <div>
-                <div className="font-bold text-white flex items-center gap-1">
-                  honeymoon <span className="text-blue-400 text-xs">✔</span>
-                </div>
-                <div className="text-gray-400 text-xs">LANA DEL REY • Following</div>
-              </div>
-              <button className="ml-auto text-white text-xl">×</button>
-            </div>
-          </div>
-        </section>
-      )}
+      {showSearch && <SearchPanel />}
       {/* Main Feed */}
       <main className="flex-1 flex flex-col items-center py-8 px-4 min-h-screen">
         {/* Stories */}
@@ -134,29 +122,31 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
         </div>
       </main>
       {/* Suggestions */}
-  <aside className="w-[350px] flex-shrink-0 py-8 px-4 border-l border-gray-800 min-h-screen ">
-        <div className="flex items-center gap-3 mb-8">
-          <img src="https://i.pravatar.cc/150?img=10" alt="avatar" className="w-12 h-12 rounded-full" />
-          <div>
-            <div className="font-bold">{user}</div>
-            <div className="text-gray-400 text-xs">Suggested for you</div>
-          </div>
-          <button className="ml-auto text-blue-400 font-bold text-sm">Switch</button>
-        </div>
-        <div className="mb-4 text-gray-400 font-semibold">Suggested for you</div>
-        <div className="flex flex-col gap-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <img src={`https://i.pravatar.cc/150?img=${i+11}`} alt="avatar" className="w-8 h-8 rounded-full" />
-              <div className="flex-1">
-                <div className="font-bold text-sm">suggested{i+1}</div>
-                <div className="text-gray-400 text-xs">Followed by user{i+2}</div>
-              </div>
-              <button className="text-blue-400 font-bold text-xs">Follow</button>
+      {!(isCompactSidebar) && (
+        <aside className="w-[350px] flex-shrink-0 py-8 px-4 border-l border-gray-800 min-h-screen ">
+          <div className="flex items-center gap-3 mb-8">
+            <img src="https://i.pravatar.cc/150?img=10" alt="avatar" className="w-12 h-12 rounded-full" />
+            <div>
+              <div className="font-bold">{user}</div>
+              <div className="text-gray-400 text-xs">Suggested for you</div>
             </div>
-          ))}
-        </div>
-      </aside>
+            <button className="ml-auto text-blue-400 font-bold text-sm">Switch</button>
+          </div>
+          <div className="mb-4 text-gray-400 font-semibold">Suggested for you</div>
+          <div className="flex flex-col gap-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <img src={`https://i.pravatar.cc/150?img=${i+11}`} alt="avatar" className="w-8 h-8 rounded-full" />
+                <div className="flex-1">
+                  <div className="font-bold text-sm">suggested{i+1}</div>
+                  <div className="text-gray-400 text-xs">Followed by user{i+2}</div>
+                </div>
+                <button className="text-blue-400 font-bold text-xs">Follow</button>
+              </div>
+            ))}
+          </div>
+        </aside>
+      )}
     </div>
   );
 };

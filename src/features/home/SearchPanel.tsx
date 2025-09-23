@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SearchPanel: React.FC = () => (
-  <section className="fixed top-0 left-16 w-[350px] min-h-screen bg-black border-r border-gray-800 py-6 px-6 flex flex-col z-50">
+  <section className="fixed top-0 left-16 w-[400px] min-h-screen bg-black border-r border-gray-800 py-6 px-6 flex flex-col z-50">
     <span className="text-2xl font-bold block mb-4">Search</span>
     <div className="bg-gray-900 rounded-lg p-2 mb-4">
       <input

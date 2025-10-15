@@ -5,24 +5,12 @@ import Suggestions from "./Suggestions";
 
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
-  const [showSearch, setShowSearch] = React.useState(false);
-  const [isCompactSidebar, setIsCompactSidebar] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setIsCompactSidebar(window.innerWidth < 1200);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // Sidebar estándar, sin lógica de compactación ni search
   return (
     <div className="bg-black text-white min-h-screen flex flex-row">
       {/* Fixed-width sidebar container */}
-      <div className="relative" style={{ width: 300, minWidth: 300 }}>
-        <div className="absolute inset-0">
-          <Sidebar showSearch={showSearch} isCompactSidebar={isCompactSidebar} setShowSearch={setShowSearch} />
-        </div>
+      <div className="relative" style={{ width: 240, minWidth: 240 }}>
+        <Sidebar />
       </div>
       <div className="flex-1 relative">
         <main

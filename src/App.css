@@ -37,6 +37,15 @@
   padding: 2em;
 }
 
+/* Oculta la barra de scroll en navegadores modernos */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
 .read-the-docs {
   color: #888;
 }

@@ -82,7 +82,7 @@ const Sidebar: React.FC<{
             {!showSearch && !isCompactSidebar && <span className="ml-3">Profile</span>}
           </button>
 
-           <button className={`flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
+           <button className={`flex items-center px-0 py-2 mt-80 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full`}>
             <div className="w-[48px] flex justify-center items-center">
               <FiMoreHorizontal size={28} />
             </div>

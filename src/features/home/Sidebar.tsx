@@ -8,8 +8,21 @@ import { MdExplore, MdVideoLibrary } from "react-icons/md";
 const Sidebar: React.FC = () => {
   const [compact, setCompact] = React.useState(false);
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1300) {
+        setCompact(true);
+      } else {
+        setCompact(false);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen bg-black transition-all duration-200 ${compact ? 'w-[72px] items-center' : 'w-[240px] items-start'}`}>
+    <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen bg-black transition-all duration-200 ${compact ? 'w-[72px] items-center' : 'w-[300px] items-start'}`}>
       {/* Logo */}
       <div className="mb-8 flex items-center justify-center" style={{ height: 56 }}>
         {!compact ? (

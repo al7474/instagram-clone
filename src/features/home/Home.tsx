@@ -1,21 +1,57 @@
+import React from "react";
 import Sidebar from "./Sidebar";
 import Suggestions from "./Suggestions";
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
+  const [prClass, setPrClass] = React.useState('pr-50');
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1500) {
+        setPrClass('pr-50');
+      } else {
+        setPrClass('pr-10');
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const [sidebarWidth, setSidebarWidth] = React.useState(300);
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1300) {
+        setSidebarWidth(100);
+      } else {
+        setSidebarWidth(300);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const [showSuggestions, setShowSuggestions] = React.useState(true);
+  React.useEffect(() => {
+    const handleResize = () => {
+      setShowSuggestions(window.innerWidth > 1160);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className="bg-black text-white min-h-screen flex flex-row">
       {/* Fixed-width sidebar container */}
-      <div className="relative" style={{ width: 240, minWidth: 240 }}>
+      <div className="relative" style={{ width: sidebarWidth, minWidth: sidebarWidth }}>
         <Sidebar />
       </div>
       <div className="flex-1 relative">
-        <main className="absolute left-1/2 top-0 transform -translate-x-1/2 pt-8 px-4 flex flex-row lg:gap-20 gap-8 justify-center w-[900px] max-w-full h-[calc(100vh-32px)]">
-          {/* Scrollable main area with two columns */}
-          <div className="flex flex-row w-full h-full overflow-y-auto max-h-full scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+  <main className={`${prClass} absolute left-1/2 top-0 transform -translate-x-1/2 pt-8 px-2 flex flex-col lg:flex-row lg:gap-20 gap-8 justify-center w-full max-w-full h-[calc(100vh-32px)]`}>
+          {/* Scrollable main area with two columns, responsive */}
+          <div className="flex flex-col lg:flex-row w-full h-full overflow-y-auto max-h-full scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             {/* Columna 1: historias y posts */}
-            <div className="flex flex-col items-center flex-1 ">
+            <div className="flex flex-col items-center flex-1 min-w-[630px]">
               {/* Stories */}
-              <div className="flex gap-4 mb-8 justify-center w-full">
+              <div className="flex gap-4 mb-8 justify-center w-full flex-wrap">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="flex flex-col items-center">
                     <div
@@ -73,7 +109,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
                   likes: "2,345 likes",
                 },
               ].map((post, i) => (
-                <div key={i} className="bg-gray-900 rounded-lg w-full mx-auto mb-8 min-w-[470px] max-w-[470px]">
+                <div key={i} className="bg-gray-900 rounded-lg w-full mx-auto mb-8 min-w-0 max-w-[470px]">
                   <img
                     src={post.img}
                     alt="post"
@@ -91,7 +127,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
                         {post.time}
                       </span>
                     </div>
-                    <div className="mb-2">{post.desc}</div>
+                    <div className="mb-2 break-words">{post.desc}</div>
                     <div className="flex gap-4 text-xl mb-2">
                       <span>❤️</span>
                       <span>💬</span>
@@ -104,9 +140,11 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
               ))}
             </div>
             {/* Columna 2: sugerencias */}
-            <div className="flex flex-col min-w-[320px] max-w-[350px] ml-12 mt-2">
-              <Suggestions user={user} />
-            </div>
+            {showSuggestions && (
+              <div className="flex flex-col w-full lg:w-[350px] min-w-0 mt-6 lg:mt-3 ml-20">
+                <Suggestions user={user} />
+              </div>
+            )}
           </div>
         </main>
       </div>

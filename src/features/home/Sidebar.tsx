@@ -11,9 +11,9 @@ const Sidebar: React.FC = () => {
   return (
     <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen bg-black transition-all duration-200 ${compact ? 'w-[72px] items-center' : 'w-[240px] items-start'}`}>
       {/* Logo */}
-      <div className="mb-8 pl-2 flex items-center justify-center" style={{ height: 56 }}>
+      <div className="mb-8 flex items-center justify-center" style={{ height: 56 }}>
         {!compact ? (
-          <img src={InstagramLogo} alt="Instagram" width={120} height={32} style={{ opacity: 0.85 }} />
+          <img src={InstagramLogo} alt="Instagram" width={120} height={32} className="pl-2" style={{ opacity: 0.85 }} />
         ) : (
           <img src={InstagramGlyph} alt="Instagram" width={32} height={32} style={{ filter: 'invert(1)' }} />
         )}

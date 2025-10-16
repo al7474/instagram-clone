@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import Suggestions from "./Suggestions";
+import BottomNav from "./BottomNav";
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
   const [sidebarWidth, setSidebarWidth] = React.useState(300);
@@ -13,8 +14,8 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
       }
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
   const [showSuggestions, setShowSuggestions] = React.useState(true);
   React.useEffect(() => {
@@ -22,25 +23,57 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
       setShowSuggestions(window.innerWidth > 1160);
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  // show bottom horizontal nav when screen width <= 760px
+  const [showBottomNav, setShowBottomNav] = React.useState<boolean>(
+    typeof window !== "undefined" ? window.innerWidth <= 760 : false
+  );
+  React.useEffect(() => {
+    const handleBottomNav = () => setShowBottomNav(window.innerWidth <= 760);
+    handleBottomNav();
+    window.addEventListener("resize", handleBottomNav);
+    return () => window.removeEventListener("resize", handleBottomNav);
   }, []);
   return (
     <div className="bg-black text-white min-h-screen flex flex-row">
       {/* Fixed-width sidebar container (sticky so it doesn't scroll) */}
-      <div className="sticky top-0 h-screen flex-shrink-0" style={{ width: sidebarWidth, minWidth: sidebarWidth }}>
-        <Sidebar />
-      </div>
+      {!showBottomNav && (
+        <div
+          className="sticky top-0 h-screen flex-shrink-0"
+          style={{ width: sidebarWidth, minWidth: sidebarWidth }}
+        >
+          <Sidebar />
+        </div>
+      )}
       <div className="flex-1 relative">
-  <main className={`pt-8 px-2 flex justify-center`}> 
+        <main className={`pt-8 px-2 flex justify-center`}>
           {/* inner flex is shrink-to-fit so width equals both columns + gap */}
-          <div className="flex w-fit overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            {/* Columna 1: historias y posts (fixed width to control total px) */}
-            <div className="flex flex-col items-center w-[630px]">
+          <div
+            className={`flex w-fit overflow-y-auto scrollbar-hide ${
+              showBottomNav ? "pb-16" : ""
+            }`}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {/* Columna 1: historias y posts (fixed width to control total px, full width at <=650px) */}
+            <div className="flex flex-col items-center max-w-[630px]">
               {/* Stories */}
-              <div className="flex gap-4 mb-8 justify-center w-full flex-wrap">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="flex flex-col items-center">
+              <div
+                className="flex flex-nowrap w-full gap-4 mb-8  overflow-x-auto scrollbar-hide snap-x snap-mandatory px-2"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  scrollBehavior: "smooth",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                {[...Array(14)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="flex-none w-[89px] flex flex-col items-center snap-center"
+                  >
                     <div
                       className="w-22 h-22 rounded-full flex items-center justify-center"
                       style={{
@@ -96,7 +129,10 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
                   likes: "2,345 likes",
                 },
               ].map((post, i) => (
-                <div key={i} className="bg-gray-900 rounded-lg w-full mx-auto mb-8 min-w-0 max-w-[470px]">
+                <div
+                  key={i}
+                  className="bg-gray-900 rounded-lg w-full mx-auto mb-8 min-w-0 max-w-[470px]"
+                >
                   <img
                     src={post.img}
                     alt="post"
@@ -128,13 +164,15 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
             </div>
             {/* Columna 2: sugerencias */}
             {showSuggestions && (
-              <div className="flex flex-col w-[260px] pt-4 ml-12">
+              <div className="flex flex-col w-[260px] pt-4 ml-20">
                 <Suggestions user={user} />
               </div>
             )}
           </div>
         </main>
       </div>
+
+      {showBottomNav && <BottomNav />}
     </div>
   );
 };

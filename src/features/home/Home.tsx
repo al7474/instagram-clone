@@ -3,19 +3,6 @@ import Sidebar from "./Sidebar";
 import Suggestions from "./Suggestions";
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
-  const [prClass, setPrClass] = React.useState('pr-50');
-  React.useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 1500) {
-        setPrClass('pr-50');
-      } else {
-        setPrClass('pr-10');
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   const [sidebarWidth, setSidebarWidth] = React.useState(300);
   React.useEffect(() => {
     const handleResize = () => {
@@ -40,16 +27,16 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
   }, []);
   return (
     <div className="bg-black text-white min-h-screen flex flex-row">
-      {/* Fixed-width sidebar container */}
-      <div className="relative" style={{ width: sidebarWidth, minWidth: sidebarWidth }}>
+      {/* Fixed-width sidebar container (sticky so it doesn't scroll) */}
+      <div className="sticky top-0 h-screen flex-shrink-0" style={{ width: sidebarWidth, minWidth: sidebarWidth }}>
         <Sidebar />
       </div>
       <div className="flex-1 relative">
-  <main className={`${prClass} absolute left-1/2 top-0 transform -translate-x-1/2 pt-8 px-2 flex flex-col lg:flex-row lg:gap-20 gap-8 justify-center w-full max-w-full h-[calc(100vh-32px)]`}>
-          {/* Scrollable main area with two columns, responsive */}
-          <div className="flex flex-col lg:flex-row w-full h-full overflow-y-auto max-h-full scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            {/* Columna 1: historias y posts */}
-            <div className="flex flex-col items-center flex-1 min-w-[630px]">
+  <main className={`pt-8 px-2 flex justify-center`}> 
+          {/* inner flex is shrink-to-fit so width equals both columns + gap */}
+          <div className="flex w-fit overflow-y-auto scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {/* Columna 1: historias y posts (fixed width to control total px) */}
+            <div className="flex flex-col items-center w-[630px]">
               {/* Stories */}
               <div className="flex gap-4 mb-8 justify-center w-full flex-wrap">
                 {[...Array(6)].map((_, i) => (
@@ -141,7 +128,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
             </div>
             {/* Columna 2: sugerencias */}
             {showSuggestions && (
-              <div className="flex flex-col w-full lg:w-[350px] min-w-0 mt-6 lg:mt-3 ml-20">
+              <div className="flex flex-col w-[260px] pt-4 ml-12">
                 <Suggestions user={user} />
               </div>
             )}

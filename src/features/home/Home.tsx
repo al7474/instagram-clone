@@ -1,9 +1,13 @@
 import React from "react";
 import Sidebar from "./Sidebar";
+import SearchPanel from "./SearchPanel";
 import Suggestions from "./Suggestions";
 import BottomNav from "./BottomNav";
 
 const Home: React.FC<{ user: string }> = ({ user }) => {
+  // Un solo estado para controlar search panel y sidebar compacto
+  const [searchActive, setSearchActive] = React.useState(false);
+
   // Estado para controlar si la pantalla es <= 650px
   const [isMobileWidth, setIsMobileWidth] = React.useState(
     typeof window !== "undefined" ? window.innerWidth <= 650 : false
@@ -50,17 +54,28 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
     return () => window.removeEventListener("resize", handleBottomNav);
   }, []);
   return (
-  <div className={`bg-black text-white min-h-screen flex flex-row ${showBottomNav ? '' : ''}`}>
+    <div className={`bg-black text-white min-h-screen flex flex-row ${showBottomNav ? '' : ''}`}>
       {/* Sidebar solo visible si no es mobile */}
       {!showBottomNav && sidebarWidth > 0 && (
-        <div
-          className="sticky top-0 h-screen flex-shrink-0"
-          style={{ width: sidebarWidth, minWidth: sidebarWidth }}
-        >
-          <Sidebar />
-        </div>
+        <>
+          <div
+            className="sticky top-0 h-screen flex-shrink-0"
+            style={{ width: sidebarWidth, minWidth: sidebarWidth }}
+          >
+            <Sidebar
+              forceCompact={searchActive}
+              onSearchClick={() => setSearchActive((v) => !v)}
+              onHomeClick={() => setSearchActive(false)}
+            />
+          </div>
+          {searchActive && (
+            <div className="relative z-50">
+              <SearchPanel />
+            </div>
+          )}
+        </>
       )}
-  <div className="flex-1 relative min-w-0">
+      <div className="flex-1 relative min-w-0">
         <main className={`pt-8 px-2 flex justify-center`}>
           {/* inner flex is shrink-to-fit so width equals both columns + gap */}
           <div
@@ -188,7 +203,6 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
           </div>
         </main>
       </div>
-
       {showBottomNav && <BottomNav />}
     </div>
   );

@@ -4,7 +4,12 @@ import SearchPanel from "./SearchPanel";
 import Suggestions from "./Suggestions";
 import BottomNav from "./BottomNav";
 
-const Home: React.FC<{ user: string }> = ({ user }) => {
+interface HomeProps {
+  user: string;
+  onLogout: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
   // Un solo estado para controlar search panel y sidebar compacto
   const [searchActive, setSearchActive] = React.useState(false);
 
@@ -66,6 +71,7 @@ const Home: React.FC<{ user: string }> = ({ user }) => {
               forceCompact={searchActive}
               onSearchClick={() => setSearchActive((v) => !v)}
               onHomeClick={() => setSearchActive(false)}
+              onLogout={onLogout}
             />
           </div>
           {searchActive && (

@@ -22,31 +22,38 @@ const MetaMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open }) =>
 };
 import { FiSettings, FiBookmark, FiLogOut } from "react-icons/fi";
 import { MdOutlineSwitchAccount, MdOutlineDarkMode, MdOutlineReportProblem } from "react-icons/md";
-const MoreMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open }) => {
+interface MoreMenuProps {
+  open: boolean;
+  onLogout: () => void;
+  menuRef?: React.RefObject<HTMLDivElement>;
+}
+const MoreMenu: React.FC<MoreMenuProps> = ({ open, onLogout, menuRef }) => {
   if (!open) return null;
+  console.log('MoreMenu rendered');
   return (
-    <div className="absolute left-20 bottom-20 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-72 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 260 }}>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 focus:bg-gray-700 text-white text-base outline-none" tabIndex={0} autoFocus>
+    <div ref={menuRef} className="absolute left-20 bottom-20 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-72 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 260 }}>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 focus:bg-gray-700 text-white text-base outline-none" tabIndex={0} autoFocus onClick={() => console.log('Settings clicked')}>
         <FiSettings size={20} /> Settings
       </button>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Your activity clicked')}>
         <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M16 3v4a1 1 0 0 0 1 1h4"/></svg>
         Your activity
       </button>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Saved clicked')}>
         <FiBookmark size={20} /> Saved
       </button>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Switch appearance clicked')}>
         <MdOutlineDarkMode size={20} /> Switch appearance
       </button>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Report a problem clicked')}>
         <MdOutlineReportProblem size={20} /> Report a problem
       </button>
       <div className="border-t border-gray-700 my-2" />
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Switch accounts clicked')}>
         <MdOutlineSwitchAccount size={20} /> Switch accounts
       </button>
-      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-red-400 text-base">
+ 
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-red-400 text-base" onClick={() => { console.log('Log out button (MoreMenu) clicked'); onLogout(); }}>
         <FiLogOut size={20} /> Log out
       </button>
     </div>
@@ -65,9 +72,10 @@ interface SidebarProps {
   forceCompact?: boolean;
   onSearchClick?: () => void;
   onHomeClick?: () => void;
+  onLogout?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick, onLogout }) => {
   const [showMeta, setShowMeta] = React.useState(false);
   const metaBtnRef = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -94,9 +102,16 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
 
   const [showMore, setShowMore] = React.useState(false);
   const moreBtnRef = React.useRef<HTMLButtonElement>(null);
+  const moreMenuRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (showMore && moreBtnRef.current && !moreBtnRef.current.contains(e.target as Node)) {
+      if (
+        showMore &&
+        moreMenuRef.current &&
+        !moreMenuRef.current.contains(e.target as Node) &&
+        moreBtnRef.current &&
+        !moreBtnRef.current.contains(e.target as Node)
+      ) {
         setShowMore(false);
       }
     }
@@ -175,7 +190,7 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
           </div>
           {!compact && <span className="ml-3">More</span>}
         </button>
-        <MoreMenu open={showMore} onClose={() => setShowMore(false)} />
+  <MoreMenu open={showMore} onLogout={() => { console.log('Logout button clicked'); if (onLogout) onLogout(); setShowMore(false); }}  />
         <button ref={metaBtnRef} className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full focus:outline-none" onClick={() => setShowMeta((v) => !v)}>
           <div className="w-[48px] flex justify-center items-center">
             <BsGrid3X3Gap size={24} />

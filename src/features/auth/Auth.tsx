@@ -1,6 +1,6 @@
 // filepath: src/features/auth/Auth.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import RegisterForm from './RegisterForm';
 import Home from '../home/Home';
 import phoneImage from '../../assets/images/landing-2x.png'; // Usa la nueva imagen descargada
@@ -9,8 +9,23 @@ function Auth() {
   const [showRegister, setShowRegister] = useState(false);
   const [loginData, setLoginData] = useState({ username: '', password: '' });
   const [loginError, setLoginError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedUser, setLoggedUser] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
+  const [loggedUser, setLoggedUser] = useState<string | null>(() => {
+    return localStorage.getItem('loggedUser') || null;
+  });
+
+  // Sincronizar estado con localStorage en cada render
+  useEffect(() => {
+    if (isLoggedIn && loggedUser) {
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedUser', loggedUser);
+    } else {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedUser');
+    }
+  }, [isLoggedIn, loggedUser]);
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
@@ -24,13 +39,20 @@ function Auth() {
     if (found) {
       setIsLoggedIn(true);
       setLoggedUser(found.username || found.email);
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedUser', found.username || found.email);
       setLoginError('');
     } else {
       setLoginError('Invalid credentials');
     }
   };
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setLoggedUser(null);
+    // localStorage se limpia en el useEffect
+  };
   if (isLoggedIn && loggedUser) {
-    return <Home user={loggedUser} />;
+    return <Home user={loggedUser} onLogout={handleLogout} />;
   }
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 font-family-system">

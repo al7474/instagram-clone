@@ -1,3 +1,57 @@
+import { BsWhatsapp, BsThreads, BsGrid3X3Gap } from "react-icons/bs";
+import { PiCirclesFourBold } from "react-icons/pi";
+const MetaMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+  if (!open) return null;
+  return (
+    <div className="absolute left-20 bottom-2 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-64 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 220 }}>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 focus:bg-gray-700 text-white text-base outline-none" tabIndex={0} autoFocus>
+        <span className="rounded-full border-2 border-white w-5 h-5 flex items-center justify-center"><span className="block w-3 h-3 bg-black rounded-full" /></span>
+        Meta AI
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <PiCirclesFourBold size={20} /> AI Studio
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <BsThreads size={20} /> Threads
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <BsWhatsapp size={20} /> WhatsApp
+      </button>
+    </div>
+  );
+};
+import { FiSettings, FiBookmark, FiLogOut } from "react-icons/fi";
+import { MdOutlineSwitchAccount, MdOutlineDarkMode, MdOutlineReportProblem } from "react-icons/md";
+const MoreMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+  if (!open) return null;
+  return (
+    <div className="absolute left-20 bottom-20 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-72 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 260 }}>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 focus:bg-gray-700 text-white text-base outline-none" tabIndex={0} autoFocus>
+        <FiSettings size={20} /> Settings
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M16 3v4a1 1 0 0 0 1 1h4"/></svg>
+        Your activity
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <FiBookmark size={20} /> Saved
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <MdOutlineDarkMode size={20} /> Switch appearance
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <MdOutlineReportProblem size={20} /> Report a problem
+      </button>
+      <div className="border-t border-gray-700 my-2" />
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base">
+        <MdOutlineSwitchAccount size={20} /> Switch accounts
+      </button>
+      <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-red-400 text-base">
+        <FiLogOut size={20} /> Log out
+      </button>
+    </div>
+  );
+};
 import React from "react";
 import InstagramLogo from '../../assets/logos/name_logo.png';
 import InstagramGlyph from '../../assets/logos/logo.png';
@@ -14,6 +68,17 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick }) => {
+  const [showMeta, setShowMeta] = React.useState(false);
+  const metaBtnRef = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    function handleClickOutsideMeta(e: MouseEvent) {
+      if (showMeta && metaBtnRef.current && !metaBtnRef.current.contains(e.target as Node)) {
+        setShowMeta(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutsideMeta);
+    return () => document.removeEventListener('mousedown', handleClickOutsideMeta);
+  }, [showMeta]);
   const [compact, setCompact] = React.useState(false);
 
   React.useEffect(() => {
@@ -27,8 +92,19 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
     return () => window.removeEventListener('resize', handleResize);
   }, [forceCompact]);
 
+  const [showMore, setShowMore] = React.useState(false);
+  const moreBtnRef = React.useRef<HTMLButtonElement>(null);
+  React.useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (showMore && moreBtnRef.current && !moreBtnRef.current.contains(e.target as Node)) {
+        setShowMore(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showMore]);
   return (
-    <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen bg-black transition-all duration-200 ${compact ? 'w-[72px] items-center' : 'w-[300px] items-start'}`}>
+    <aside className={`flex-shrink-0 flex flex-col py-6 px-4 border-r border-gray-800 min-h-screen bg-black transition-all duration-200 ${compact ? 'w-[72px] items-center' : 'w-[300px] items-start'} relative`}>
       {/* Logo */}
       <div className="mb-8 flex items-center justify-center" style={{ height: 56 }}>
         {!compact ? (
@@ -92,19 +168,21 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
         </button>
       </nav>
       {/* Bottom options */}
-      <div className="mt-auto flex flex-col gap-2 pb-4">
-        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
+      <div className="mt-auto flex flex-col gap-2 pb-4 relative w-full">
+        <button ref={moreBtnRef} className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full focus:outline-none" onClick={() => setShowMore((v) => !v)}>
           <div className="w-[48px] flex justify-center items-center">
             <FiMoreHorizontal size={28} />
           </div>
           {!compact && <span className="ml-3">More</span>}
         </button>
-        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
+        <MoreMenu open={showMore} onClose={() => setShowMore(false)} />
+        <button ref={metaBtnRef} className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full focus:outline-none" onClick={() => setShowMeta((v) => !v)}>
           <div className="w-[48px] flex justify-center items-center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <BsGrid3X3Gap size={24} />
           </div>
-          {!compact && <span className="ml-3">Also from Meta</span>}
+          {!compact && <span className="ml-3 ">Also from Meta</span>}
         </button>
+        <MetaMenu open={showMeta} onClose={() => setShowMeta(false)} />
       </div>
     </aside>
   );

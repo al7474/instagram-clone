@@ -1,6 +1,6 @@
 import { BsWhatsapp, BsThreads, BsGrid3X3Gap } from "react-icons/bs";
 import { PiCirclesFourBold } from "react-icons/pi";
-const MetaMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+const MetaMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open }) => {
   if (!open) return null;
   return (
     <div className="absolute left-20 bottom-2 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-64 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 220 }}>
@@ -22,7 +22,7 @@ const MetaMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onCl
 };
 import { FiSettings, FiBookmark, FiLogOut } from "react-icons/fi";
 import { MdOutlineSwitchAccount, MdOutlineDarkMode, MdOutlineReportProblem } from "react-icons/md";
-const MoreMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
+const MoreMenu: React.FC<{ open: boolean; onClose: () => void }> = ({ open }) => {
   if (!open) return null;
   return (
     <div className="absolute left-20 bottom-20 bg-[#232323] border border-gray-800 rounded-xl shadow-lg w-72 z-50 p-2 flex flex-col gap-1 animate-fade-in" style={{ minWidth: 260 }}>

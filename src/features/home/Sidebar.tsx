@@ -73,9 +73,10 @@ interface SidebarProps {
   onSearchClick?: () => void;
   onHomeClick?: () => void;
   onLogout?: () => void;
+  onExploreClick?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick, onLogout, onExploreClick }) => {
   const [showMeta, setShowMeta] = React.useState(false);
   const metaBtnRef = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -145,7 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
           </div>
           {!compact && <span className="ml-3">Search</span>}
         </button>
-        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
+        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full" onClick={onExploreClick}>
           <div className="w-[48px] flex justify-center items-center">
             <MdExplore size={28}/>
           </div>

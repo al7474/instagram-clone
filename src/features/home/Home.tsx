@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import SearchPanel from "./SearchPanel";
 import HomeFeed from "./HomeFeed";
+import Explorer from "./Explorer";
 import BottomNav from "./BottomNav";
 
 interface HomeProps {
@@ -12,6 +13,7 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
   // Un solo estado para controlar search panel y sidebar compacto
   const [searchActive, setSearchActive] = React.useState(false);
+  const [exploreActive, setExploreActive] = React.useState(false);
 
   // Estado para controlar si la pantalla es <= 650px
   const [isMobileWidth, setIsMobileWidth] = React.useState(
@@ -70,8 +72,15 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
             <Sidebar
               forceCompact={searchActive}
               onSearchClick={() => setSearchActive((v) => !v)}
-              onHomeClick={() => setSearchActive(false)}
+              onHomeClick={() => {
+                setSearchActive(false);
+                setExploreActive(false);
+              }}
               onLogout={onLogout}
+              onExploreClick={() => {
+                setExploreActive(true);
+                setSearchActive(false);
+              }}
             />
           </div>
           {searchActive && (
@@ -83,7 +92,11 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
       )}
       <div className="flex-1 relative min-w-0">
         <main className={`pt-8 px-2 flex justify-center`}>
-          <HomeFeed user={user} showSuggestions={showSuggestions} isMobileWidth={isMobileWidth} />
+          {exploreActive ? (
+            <Explorer />
+          ) : (
+            <HomeFeed user={user} showSuggestions={showSuggestions} isMobileWidth={isMobileWidth} />
+          )}
         </main>
       </div>
       {showBottomNav && <BottomNav />}

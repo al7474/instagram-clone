@@ -189,7 +189,7 @@ function Auth() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center h-[85px] pb-[50px]">
+      <footer className="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 text-center h-[85px] pb-[50px]">
         <p className="text-sm">
           © {new Date().getFullYear()} Instagram Clone. All rights reserved.
         </p>

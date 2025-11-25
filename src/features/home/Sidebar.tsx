@@ -36,7 +36,7 @@ const MoreMenu: React.FC<MoreMenuProps> = ({ open, onLogout, menuRef }) => {
         <FiSettings size={20} /> Settings
       </button>
       <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Your activity clicked')}>
-        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M16 3v4a1 1 0 0 0 1 1h4"/></svg>
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M16 3v4a1 1 0 0 0 1 1h4" /></svg>
         Your activity
       </button>
       <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Saved clicked')}>
@@ -52,7 +52,7 @@ const MoreMenu: React.FC<MoreMenuProps> = ({ open, onLogout, menuRef }) => {
       <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-white text-base" onClick={() => console.log('Switch accounts clicked')}>
         <MdOutlineSwitchAccount size={20} /> Switch accounts
       </button>
- 
+
       <button className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 text-red-400 text-base" onClick={() => { console.log('Log out button (MoreMenu) clicked'); onLogout(); }}>
         <FiLogOut size={20} /> Log out
       </button>
@@ -74,9 +74,10 @@ interface SidebarProps {
   onHomeClick?: () => void;
   onLogout?: () => void;
   onExploreClick?: () => void;
+  onReelsClick?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick, onLogout, onExploreClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, onHomeClick, onLogout, onExploreClick, onReelsClick }) => {
   const [showMeta, setShowMeta] = React.useState(false);
   const metaBtnRef = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -136,43 +137,43 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
           if (onHomeClick) onHomeClick();
         }}>
           <div className="w-[48px] flex justify-center items-center">
-            <FiHome size={28}/>
+            <FiHome size={28} />
           </div>
           {!compact && <span className="ml-3">Home</span>}
         </button>
   <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full" onClick={onSearchClick}>
           <div className="w-[48px] flex justify-center items-center">
-            <FiSearch size={28}/>
+            <FiSearch size={28} />
           </div>
           {!compact && <span className="ml-3">Search</span>}
         </button>
         <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full" onClick={onExploreClick}>
           <div className="w-[48px] flex justify-center items-center">
-            <MdExplore size={28}/>
+            <MdExplore size={28} />
           </div>
           {!compact && <span className="ml-3">Explore</span>}
         </button>
-        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
+        <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full" onClick={onReelsClick}>
           <div className="w-[48px] flex justify-center items-center">
-            <MdVideoLibrary size={28}/>
+            <MdVideoLibrary size={28} />
           </div>
           {!compact && <span className="ml-3">Reels</span>}
         </button>
         <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
           <div className="w-[48px] flex justify-center items-center">
-            <FiMessageCircle size={28}/>
+            <FiMessageCircle size={28} />
           </div>
           {!compact && <span className="ml-3">Messages</span>}
         </button>
         <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
           <div className="w-[48px] flex justify-center items-center">
-            <FiHeart size={28}/>
+            <FiHeart size={28} />
           </div>
           {!compact && <span className="ml-3">Notifications</span>}
         </button>
         <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full">
           <div className="w-[48px] flex justify-center items-center">
-            <FiPlusSquare size={28}/>
+            <FiPlusSquare size={28} />
           </div>
           {!compact && <span className="ml-3">Create</span>}
         </button>
@@ -191,7 +192,7 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
           </div>
           {!compact && <span className="ml-3">More</span>}
         </button>
-  <MoreMenu open={showMore} onLogout={() => { console.log('Logout button clicked'); if (onLogout) onLogout(); setShowMore(false); }}  />
+        <MoreMenu open={showMore} onLogout={() => { console.log('Logout button clicked'); if (onLogout) onLogout(); setShowMore(false); }} />
         <button ref={metaBtnRef} className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full focus:outline-none" onClick={() => setShowMeta((v) => !v)}>
           <div className="w-[48px] flex justify-center items-center">
             <BsGrid3X3Gap size={24} />

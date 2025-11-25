@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import SearchPanel from "./SearchPanel";
 import HomeFeed from "./HomeFeed";
 import Explorer from "./Explorer";
+import Reels from "./Reels";
 import BottomNav from "./BottomNav";
 
 interface HomeProps {
@@ -14,6 +15,7 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
   // Un solo estado para controlar search panel y sidebar compacto
   const [searchActive, setSearchActive] = React.useState(false);
   const [exploreActive, setExploreActive] = React.useState(false);
+  const [reelsActive, setReelsActive] = React.useState(false);
 
   // Estado para controlar si la pantalla es <= 650px
   const [isMobileWidth, setIsMobileWidth] = React.useState(
@@ -60,6 +62,44 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
     window.addEventListener("resize", handleBottomNav);
     return () => window.removeEventListener("resize", handleBottomNav);
   }, []);
+
+  // If Reels is active, show full-screen Reels view
+  if (reelsActive) {
+    return (
+      <div className="bg-black text-white min-h-screen flex flex-row">
+        {/* Sidebar visible on desktop only */}
+        {!showBottomNav && sidebarWidth > 0 && (
+          <div
+            className="sticky top-0 h-screen flex-shrink-0 z-50"
+            style={{ width: sidebarWidth, minWidth: sidebarWidth }}
+          >
+            <Sidebar
+              forceCompact={true}
+              onSearchClick={() => {
+                setReelsActive(false);
+                setSearchActive(true);
+              }}
+              onHomeClick={() => {
+                setReelsActive(false);
+                setSearchActive(false);
+                setExploreActive(false);
+              }}
+              onLogout={onLogout}
+              onExploreClick={() => {
+                setReelsActive(false);
+                setExploreActive(true);
+                setSearchActive(false);
+              }}
+              onReelsClick={() => setReelsActive(true)}
+            />
+          </div>
+        )}
+        <Reels />
+        {showBottomNav && <BottomNav onReelsClick={() => setReelsActive(true)} />}
+      </div>
+    );
+  }
+
   return (
     <div className={`bg-black text-white min-h-screen flex flex-row ${showBottomNav ? '' : ''}`}>
       {/* Sidebar solo visible si no es mobile */}
@@ -75,11 +115,18 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
               onHomeClick={() => {
                 setSearchActive(false);
                 setExploreActive(false);
+                setReelsActive(false);
               }}
               onLogout={onLogout}
               onExploreClick={() => {
                 setExploreActive(true);
                 setSearchActive(false);
+                setReelsActive(false);
+              }}
+              onReelsClick={() => {
+                setReelsActive(true);
+                setSearchActive(false);
+                setExploreActive(false);
               }}
             />
           </div>
@@ -99,7 +146,7 @@ const Home: React.FC<HomeProps> = ({ user, onLogout }) => {
           )}
         </main>
       </div>
-      {showBottomNav && <BottomNav />}
+      {showBottomNav && <BottomNav onReelsClick={() => setReelsActive(true)} />}
     </div>
   );
 };

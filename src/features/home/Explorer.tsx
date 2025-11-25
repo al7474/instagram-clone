@@ -1,33 +1,79 @@
-import React from "react";
+import React, { useState } from 'react';
+import { FiHeart, FiMessageCircle } from 'react-icons/fi';
+import { MdPlayArrow, MdViewCarousel } from 'react-icons/md';
+import { mockExplorePosts } from '../../data/mockExplorePosts';
 
-const exploreImages: string[] = [
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80',
-  'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=400&q=80',
-];
+const Explorer: React.FC = () => {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-const Explorer: React.FC = () => (
-  <div className="w-full flex flex-col items-center justify-center">
-    <div className="grid grid-cols-3 gap-2 max-w-3xl w-full mt-8">
-      {exploreImages.slice(0, 15).map((img, i) => (
-        <div key={i} className="aspect-square bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
-          <img src={img} alt={`explore-${i}`} className="object-cover w-full h-full" />
-        </div>
-      ))}
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toLocaleString();
+  };
+
+  return (
+    <div className="w-full max-w-[975px] mx-auto px-0">
+      {/* Masonry Grid */}
+      <div className="grid grid-cols-3 gap-1 auto-rows-[293px]">
+        {mockExplorePosts.map((post) => (
+          <div
+            key={post.id}
+            className={`relative overflow-hidden cursor-pointer group bg-gray-800 ${post.size === 'large' ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1'
+              }`}
+            onMouseEnter={() => setHoveredId(post.id)}
+            onMouseLeave={() => setHoveredId(null)}
+          >
+            {/* Image */}
+            <img
+              src={post.imageUrl}
+              alt={`explore-${post.id}`}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+
+            {/* Type Indicator - Top Right */}
+            {post.type === 'video' && (
+              <div className="absolute top-3 right-3 text-white">
+                <MdPlayArrow size={24} />
+              </div>
+            )}
+            {post.type === 'carousel' && (
+              <div className="absolute top-3 right-3 text-white">
+                <MdViewCarousel size={20} />
+              </div>
+            )}
+
+            {/* Hover Overlay */}
+            <div
+              className={`absolute inset-0 bg-black/40 flex items-center justify-center gap-6 transition-opacity duration-200 ${hoveredId === post.id ? 'opacity-100' : 'opacity-0'
+                }`}
+            >
+              {/* Likes */}
+              <div className="flex items-center gap-2 text-white font-semibold">
+                <FiHeart size={24} className="fill-white" />
+                <span className="text-lg">{formatNumber(post.likes)}</span>
+              </div>
+
+              {/* Comments */}
+              <div className="flex items-center gap-2 text-white font-semibold">
+                <FiMessageCircle size={24} className="fill-white" />
+                <span className="text-lg">{formatNumber(post.comments)}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Explorer;

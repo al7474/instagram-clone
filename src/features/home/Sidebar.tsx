@@ -131,7 +131,7 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
       </div>
       {/* Main options */}
       <nav className="flex flex-col gap-2 w-full">
-        <button className={`flex items-center px-0 py-3 text-lg font-bold text-white bg-black rounded-lg w-full`} onClick={() => {
+        <button className="flex items-center px-0 py-3 text-lg font-bold text-white bg-black hover:bg-gray-900 rounded-lg w-full" onClick={() => {
           setCompact(false);
           if (onHomeClick) onHomeClick();
         }}>
@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ forceCompact = false, onSearchClick, 
           </div>
           {!compact && <span className="ml-3">Home</span>}
         </button>
-        <button className={`flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full ${compact ? 'bg-gray-900' : ''}`} onClick={onSearchClick}>
+  <button className="flex items-center px-0 py-2 text-lg font-normal text-white hover:bg-gray-900 rounded-lg w-full" onClick={onSearchClick}>
           <div className="w-[48px] flex justify-center items-center">
             <FiSearch size={28}/>
           </div>
